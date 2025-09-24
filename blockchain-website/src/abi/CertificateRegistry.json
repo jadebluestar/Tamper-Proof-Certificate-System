@@ -1,0 +1,42 @@
+[
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "getCertificates",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string[]"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "certificate",
+                "type": "string"
+            }
+        ],
+        "name": "addCertificate",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "certificate",
+                "type": "string"
+            }
+        ],
+        "name": "CertificateAdded",
+        "type": "event"
+    }
+]
