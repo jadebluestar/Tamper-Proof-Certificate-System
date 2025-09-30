@@ -1,28 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect } from 'react';
+import './ConnectWallet.css';
 
-function ConnectWallet() {
-  const [account, setAccount] = useState(null);
+const ConnectWallet = ({ account, setAccount, isConnected, setIsConnected }) => {
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+    }
+    return () => {
+      if (window.ethereum) window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+    };
+  }, []);
+
+  const handleAccountsChanged = (accounts) => {
+    if (accounts.length === 0) setIsConnected(false);
+    else setAccount(accounts[0]);
+  };
 
   const connectWallet = async () => {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-        setAccount(accounts[0]);
-      } catch (error) {
-        alert("Connection to MetaMask was rejected.");
-      }
-    } else {
-      alert("MetaMask not detected. Please install MetaMask extension.");
-    }
+    if (!window.ethereum) return alert('Install MetaMask!');
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    setAccount(accounts[0]);
+    setIsConnected(true);
   };
 
   return (
     <div>
-      <button onClick={connectWallet}>
-        {account ? `Connected: ${account.substring(0, 6)}...${account.substring(account.length - 4)}` : "Connect Wallet"}
-      </button>
+      {!isConnected ? (
+        <button onClick={connectWallet}>🦊 Connect Wallet</button>
+      ) : (
+        <span>{account.substring(0,6)}...{account.substring(38)}</span>
+      )}
     </div>
   );
-}
+};
 
 export default ConnectWallet;
